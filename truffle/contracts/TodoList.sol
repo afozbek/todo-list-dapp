@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.8.0;
 
-contract TodoList {
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract TodoList is Ownable {
     uint256 public todoCount = 0;
 
     struct Todo {
@@ -55,5 +57,9 @@ contract TodoList {
 
         todos[_id] = todo;
         emit TodoDeleted(_id, todo.isExist);
+    }
+
+    function hasUserAccountOwner(address _user) public view returns (bool) {
+        return _user == owner();
     }
 }
