@@ -1,3 +1,61 @@
 {
-  "extends": ["next/babel","next/core-web-vitals"]
+  "env": {
+		"browser": true,
+		"es2021": true
+	},
+	"settings": {
+		"react": {
+			"version": "detect"
+		}
+	},
+  "extends": [
+		"eslint:recommended",
+		"next",
+		"next/core-web-vitals",
+    "next/babel",
+		"plugin:prettier/recommended"
+	],
+	"plugins": ["unused-imports", "prettier"],
+  "rules": {
+		"no-unused-vars": "off",
+		"@typescript-eslint/no-unused-vars": "off",
+		/* @dev Manage unused imports with the plugin */
+		"unused-imports/no-unused-imports": "error",
+
+		"prettier/prettier": "error",
+
+		/* @dev Enable it if you want to configure this property */
+		"unused-imports/no-unused-vars": [
+		  "warn",
+		  { "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
+		],
+
+		"no-duplicate-imports": [
+			"error",
+			{
+				"includeExports": true
+			}
+		],
+
+		// ESLINT RULES
+		"no-async-promise-executor": "off",
+		"no-irregular-whitespace": "off",
+
+		// TYPESCRIPT RULES
+		"@typescript-eslint/no-empty-function": "off", // allows empty functions
+		"@typescript-eslint/no-explicit-any": "off", // allows any type
+
+		// REACT RULES
+		"react/no-unused-state": "error",
+		"react-hooks/exhaustive-deps": ["off"],
+		"react/no-unescaped-entities": ["off"],
+
+		// NEXT RULES
+		"@next/next/no-img-element": "off",
+		"@next/next/link-passhref": "off",
+
+		// ACCESSABILITY
+		"jsx-a11y/alt-text": ["off"]
+
+	}
 }
