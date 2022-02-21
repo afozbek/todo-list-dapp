@@ -39,12 +39,14 @@ const TodosPage = () => {
 			const { id, content, completed, isExist } =
 				await smartContractInstance.methods.getTodo(i).call();
 
-			totalList.push({
-				id,
-				content,
-				completed,
-				isExist,
-			});
+			if (isExist) {
+				totalList.push({
+					id,
+					content,
+					completed,
+					isExist,
+				});
+			}
 		}
 
 		setTodoList(totalList);
@@ -93,6 +95,28 @@ const TodosPage = () => {
 					return _todo;
 				})
 			);
+		} catch (err) {
+			console.log({ err });
+		}
+	};
+
+	const handleDeleteTodo = async todo => {
+		try {
+			if (!userData?.account) {
+				toast.error("User is not connected");
+				throw new Error("user is not connected ");
+			}
+
+			debugger;
+			const tx = await smartContractInstance.methods
+				.deleteTodo(todo.id)
+				.send({ from: userData?.account });
+
+			console.log({ tx });
+
+			const newTodoList = todoList.filter(_todo => _todo.id != todo.id);
+
+			setTodoList(newTodoList);
 		} catch (err) {
 			console.log({ err });
 		}
@@ -153,6 +177,14 @@ const TodosPage = () => {
 										/>
 										{todo.content}
 									</label>
+
+									<button
+										onClick={() => {
+											handleDeleteTodo(todo);
+										}}
+									>
+										Delete Todo
+									</button>
 								</li>
 						  ))
 						: null}
