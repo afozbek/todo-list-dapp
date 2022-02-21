@@ -1,4 +1,3 @@
-import { hello } from "config";
 import { TransactionContext } from "contexts/TransactionContext";
 import useTransactionListener from "hooks/useTransactionListener";
 import React, { useContext, useEffect, useState } from "react";
