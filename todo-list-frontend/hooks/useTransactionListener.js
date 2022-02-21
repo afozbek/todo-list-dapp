@@ -1,4 +1,4 @@
-import { TransactionContext } from "context/TransactionContext";
+import { TransactionContext } from "contexts/TransactionContext";
 import { useState, useContext } from "react";
 import { toast } from "react-toastify";
 import { TRANSACTION_STATUS_TYPES } from "utils/enums";
@@ -6,15 +6,20 @@ import useInterval from "./useInterval";
 
 const useTransactionListener = () => {
   const [lastFinishedTransaction, setLastFinishedTransaction] = useState(null);
-  const { transactionList, setTransactionList, web3Instance: web3 } = useContext(TransactionContext);
+  const {
+    transactionList,
+    setTransactionList,
+    web3Instance: web3,
+  } = useContext(TransactionContext);
 
-  const shouldLookForTransactionStatus = transactionList && transactionList.length > 0;
+  const shouldLookForTransactionStatus =
+    transactionList && transactionList.length > 0;
 
   useInterval(
     () => {
       console.log("Looking..", transactionList);
       if (transactionList && transactionList.length) {
-        transactionList.forEach(transaction => {
+        transactionList.forEach((transaction) => {
           lookForTransactionStatus(transaction);
         });
       }
@@ -31,13 +36,13 @@ const useTransactionListener = () => {
     console.log({ transactionStatus });
 
     if (transactionStatus == TRANSACTION_STATUS_TYPES.COMPLETED) {
-      return transactionList.filter(tx => tx.hash != txHash);
+      return transactionList.filter((tx) => tx.hash != txHash);
     }
 
     return transactionList;
   };
 
-  const lookForTransactionStatus = async transaction => {
+  const lookForTransactionStatus = async (transaction) => {
     try {
       const { COMPLETED, FAILED, PENDING } = TRANSACTION_STATUS_TYPES;
 
@@ -66,7 +71,10 @@ const useTransactionListener = () => {
         console.error("There is something wrong about your logic");
       }
 
-      const txList = await updateTransactionStatus(transaction.hash, currentTransactionStatus);
+      const txList = await updateTransactionStatus(
+        transaction.hash,
+        currentTransactionStatus
+      );
       setTransactionList(txList);
 
       // Call Callback Function
@@ -82,7 +90,7 @@ const useTransactionListener = () => {
   };
 
   return {
-    lastFinishedTransaction
+    lastFinishedTransaction,
   };
 };
 
