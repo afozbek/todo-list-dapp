@@ -1,3 +1,4 @@
+import ModalEditTodo from "components/modals/ModalEditTodo";
 import { TransactionContext } from "contexts/TransactionContext";
 import useTransactionListener from "hooks/useTransactionListener";
 import React, { useContext, useEffect, useState } from "react";
@@ -16,6 +17,11 @@ const TodosPage = () => {
 
 	const [todoList, setTodoList] = useState([]);
 	const [newTodoText, setNewTodoText] = useState("");
+	const [modals, setModals] = useState({
+		ModalEditTodo: false,
+		ModalDeleteTodoConfirm: false,
+	});
+	const [editedTodo, setEditedTodo] = useState(null);
 
 	const { lastFinishedTransaction } = useTransactionListener();
 
@@ -100,6 +106,39 @@ const TodosPage = () => {
 		}
 	};
 
+	const handleEditTodo = async newTodo => {
+		console.log({ newTodo });
+
+		try {
+			if (!userData?.account) {
+				toast.error("User is not connected");
+				throw new Error("user is not connected ");
+			}
+
+			const tx = await smartContractInstance.methods
+				.editTodo(newTodo.id, newTodo.content)
+				.send({ from: userData?.account });
+
+			console.log({ tx });
+
+			setTodoList(
+				todoList.map(_todo => {
+					if (_todo.id == newTodo.id) {
+						return newTodo;
+					}
+					return _todo;
+				})
+			);
+
+			setModals({
+				...modals,
+				ModalEditTodo: false,
+			});
+		} catch (err) {
+			console.log({ err });
+		}
+	};
+
 	const handleDeleteTodo = async todo => {
 		try {
 			if (!userData?.account) {
@@ -122,7 +161,6 @@ const TodosPage = () => {
 		}
 	};
 
-	console.log({ lastFinishedTransaction });
 	return (
 		<div className="todos">
 			<div className="app-container">
@@ -180,6 +218,15 @@ const TodosPage = () => {
 
 									<button
 										onClick={() => {
+											setEditedTodo(todo);
+											setModals({ ...modals, ModalEditTodo: true });
+										}}
+									>
+										Edit Todo
+									</button>
+
+									<button
+										onClick={() => {
 											handleDeleteTodo(todo);
 										}}
 									>
@@ -190,6 +237,15 @@ const TodosPage = () => {
 						: null}
 				</ul>
 			</div>
+
+			<ModalEditTodo
+				modalIsOpen={modals.ModalEditTodo}
+				closeModal={() => {
+					setModals({ ...modals, ModalEditTodo: false });
+				}}
+				handleEditTodo={handleEditTodo}
+				editedTodo={editedTodo}
+			/>
 		</div>
 	);
 };

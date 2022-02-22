@@ -1,8 +1,52 @@
 export const hello = "ad";
 
-export const CONTRACT_ADDRESS = "0x169cFc1306efaaCCD5F43847db07a7251782eECD";
+export const CONTRACT_ADDRESS = "0x80bEe83c7E268c12290D7d89BD353b5d85d232ff";
 
 export const CONTRACT_ABI = [
+	{
+		inputs: [
+			{
+				internalType: "string",
+				name: "_content",
+				type: "string",
+			},
+		],
+		name: "createTodo",
+		outputs: [],
+		stateMutability: "payable",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "_id",
+				type: "uint256",
+			},
+		],
+		name: "deleteTodo",
+		outputs: [],
+		stateMutability: "payable",
+		type: "function",
+	},
+	{
+		inputs: [
+			{
+				internalType: "uint256",
+				name: "_id",
+				type: "uint256",
+			},
+			{
+				internalType: "string",
+				name: "_content",
+				type: "string",
+			},
+		],
+		name: "editTodo",
+		outputs: [],
+		stateMutability: "payable",
+		type: "function",
+	},
 	{
 		inputs: [],
 		stateMutability: "nonpayable",
@@ -26,6 +70,13 @@ export const CONTRACT_ABI = [
 		],
 		name: "OwnershipTransferred",
 		type: "event",
+	},
+	{
+		inputs: [],
+		name: "renounceOwnership",
+		outputs: [],
+		stateMutability: "nonpayable",
+		type: "function",
 	},
 	{
 		anonymous: false,
@@ -93,12 +144,12 @@ export const CONTRACT_ABI = [
 	{
 		inputs: [
 			{
-				internalType: "string",
-				name: "_content",
-				type: "string",
+				internalType: "uint256",
+				name: "_id",
+				type: "uint256",
 			},
 		],
-		name: "createTodo",
+		name: "toggleCompleted",
 		outputs: [],
 		stateMutability: "payable",
 		type: "function",
@@ -106,32 +157,14 @@ export const CONTRACT_ABI = [
 	{
 		inputs: [
 			{
-				internalType: "uint256",
-				name: "_id",
-				type: "uint256",
+				internalType: "address",
+				name: "newOwner",
+				type: "address",
 			},
 		],
-		name: "deleteTodo",
+		name: "transferOwnership",
 		outputs: [],
-		stateMutability: "payable",
-		type: "function",
-	},
-	{
-		inputs: [
-			{
-				internalType: "uint256",
-				name: "_id",
-				type: "uint256",
-			},
-			{
-				internalType: "string",
-				name: "_content",
-				type: "string",
-			},
-		],
-		name: "editTodo",
-		outputs: [],
-		stateMutability: "payable",
+		stateMutability: "nonpayable",
 		type: "function",
 	},
 	{
@@ -209,13 +242,6 @@ export const CONTRACT_ABI = [
 	},
 	{
 		inputs: [],
-		name: "renounceOwnership",
-		outputs: [],
-		stateMutability: "nonpayable",
-		type: "function",
-	},
-	{
-		inputs: [],
 		name: "todoCount",
 		outputs: [
 			{
@@ -259,32 +285,6 @@ export const CONTRACT_ABI = [
 			},
 		],
 		stateMutability: "view",
-		type: "function",
-	},
-	{
-		inputs: [
-			{
-				internalType: "uint256",
-				name: "_id",
-				type: "uint256",
-			},
-		],
-		name: "toggleCompleted",
-		outputs: [],
-		stateMutability: "payable",
-		type: "function",
-	},
-	{
-		inputs: [
-			{
-				internalType: "address",
-				name: "newOwner",
-				type: "address",
-			},
-		],
-		name: "transferOwnership",
-		outputs: [],
-		stateMutability: "nonpayable",
 		type: "function",
 	},
 ];
